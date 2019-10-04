@@ -1,0 +1,27 @@
+version: 3
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7.2-apache-stretch-node-browsers
+
+    steps:
+      - checkout
+      - run:
+          name: Install things we need
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libzip-dev
+            sudo apt-get install -y zlib1g-dev libicu-dev g++
+      - run:
+          name: Install PHP exts
+          command: |
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install intl
+      - run:
+          name: Run tests
+          command: |
+            php src/index.php
+# PHP CircleCI 2.0 configuration file
+
